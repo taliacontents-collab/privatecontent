@@ -30,7 +30,7 @@ const AppContent: FC = () => {
   const [showSplash, setShowSplash] = useState(false);
   const [showAgeVerification, setShowAgeVerification] = useState(true);
   const location = useLocation();
-  const enableSplash = true; // feature-flag: enable splash to match new design
+  const enableSplash = false; // feature-flag: disable splash animation
   
   // Atualizar o título da página quando o siteName mudar
   useEffect(() => {

@@ -578,20 +578,29 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
           )}
         </Box>
 
-        {/* Actions: Preview and Telegram */}
-        <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+        {/* Actions: Preview and Payment/Link buttons - Mobile optimized */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75, mt: 1 }}>
+          {/* Preview button - Always first and full width */}
           <Button
             variant="contained"
             color="primary"
             fullWidth
             startIcon={<VisibilityIcon />}
             onClick={handlePreviewClick}
+            sx={{
+              py: 0.75,
+              fontWeight: 'bold',
+              fontSize: '0.875rem',
+              textTransform: 'none',
+            }}
           >
             Preview
           </Button>
-          {/* Show link button only if is_free and has product_link */}
-          {video.is_free && video.product_link && (
-              <Button
+
+          {/* Conditional second row based on video type */}
+          {video.is_free && video.product_link ? (
+            // For FREE videos with product link
+            <Button
               variant="outlined"
               color="primary"
               fullWidth
@@ -599,14 +608,18 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
                 e.stopPropagation();
                 window.open(video.product_link, '_blank');
               }}
-              sx={{ fontWeight: 'bold' }}
+              sx={{ 
+                py: 0.75,
+                fontWeight: 'bold',
+                fontSize: '0.875rem',
+                textTransform: 'none',
+              }}
             >
-              View Product Link
+              Product Link
             </Button>
-          )}
-          {/* Payment buttons only if not free */}
-          {!video.is_free && (
-            <>
+          ) : !video.is_free ? (
+            // For PAID videos - Payment options in row
+            <Box sx={{ display: 'flex', gap: 0.75 }}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -615,21 +628,41 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
                 href={telegramHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                sx={{
+                  py: 0.75,
+                  fontWeight: 'bold',
+                  fontSize: '0.875rem',
+                  textTransform: 'none',
+                }}
               >
                 Telegram
               </Button>
               <Button
                 variant="contained"
-                color="primary"
                 fullWidth
                 startIcon={<CreditCardIcon />}
                 onClick={handleStripePay}
                 disabled={isStripeLoading}
+                sx={{
+                  py: 0.75,
+                  fontWeight: 'bold',
+                  fontSize: '0.875rem',
+                  textTransform: 'none',
+                  background: 'linear-gradient(45deg, #c62828 30%, #ef5350 90%)',
+                  color: 'white',
+                  '&:hover': {
+                    background: 'linear-gradient(45deg, #b71c1c 30%, #e53935 90%)',
+                  },
+                  '&:disabled': {
+                    background: '#555',
+                    color: '#999'
+                  }
+                }}
               >
-                Pay instatly
+                Pay
               </Button>
-            </>
-          )}
+            </Box>
+          ) : null}
         </Box>
 
       </CardContent>
