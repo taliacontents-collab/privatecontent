@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useSearchParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -134,11 +134,28 @@ const Home: FC = () => {
   const [sectionOnlineNow, setSectionOnlineNow] = useState<number>(() => Math.floor(Math.random() * 101));
   const [sectionHappyCustomers] = useState<number>(() => Math.floor(Math.random() * (1300 - 700 + 1)) + 700);
   const [sectionRating] = useState<number>(() => parseFloat((Math.random() * 0.6 + 4.2).toFixed(1)));
+  const [showCancelMessage, setShowCancelMessage] = useState(false);
   
   const { user } = useAuth();
   const { videoListTitle, telegramUsername } = useSiteConfig();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const videosPerPage = 24; // Aumentar de 12 para 24 vídeos por página
+
+  // Detectar se o pagamento foi cancelado
+  useEffect(() => {
+    const paymentCanceled = searchParams.get('payment_canceled');
+    if (paymentCanceled === 'true') {
+      setShowCancelMessage(true);
+      console.log('✅ REDIRECIONAMENTO WHOP FUNCIONANDO! (Promo Banner) URL contém: payment_canceled=true');
+      // Limpar o parâmetro da URL após 8 segundos
+      setTimeout(() => {
+        setShowCancelMessage(false);
+        searchParams.delete('payment_canceled');
+        setSearchParams(searchParams);
+      }, 8000);
+    }
+  }, [searchParams, setSearchParams]);
 
   // Check for Stripe payment success on component mount
   useEffect(() => {
@@ -331,6 +348,25 @@ Please let me know if you need any assistance accessing your content.`;
       <FeaturedBanner onError={handleBannerError} />
       
       <Container maxWidth="lg" sx={{ py: 3 }}>
+        {/* Mensagem de Cancelamento de Pagamento */}
+        {showCancelMessage && (
+          <Alert 
+            severity="success" 
+            sx={{ mb: 3 }}
+            onClose={() => setShowCancelMessage(false)}
+          >
+            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              ✅ REDIRECIONAMENTO WHOP FUNCIONANDO!
+            </Typography>
+            <Typography variant="body2">
+              Pagamento cancelado no promo banner. Você foi redirecionado de volta com sucesso do checkout do Whop.
+            </Typography>
+            <Typography variant="caption" component="div" sx={{ mt: 1, opacity: 0.7, fontFamily: 'monospace' }}>
+              URL: ?payment_canceled=true
+            </Typography>
+          </Alert>
+        )}
+
         {/* Status das Credenciais */}
         <CredentialsStatus />
 

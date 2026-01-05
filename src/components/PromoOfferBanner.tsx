@@ -112,7 +112,8 @@ const PromoOfferBanner = ({ telegramLink, telegramUsername, prefilledMessage }: 
       const randomProductName = productNames[Math.floor(Math.random() * productNames.length)];
       
       // Build success and cancel URLs (usando HashRouter)
-      const successUrl = `${window.location.origin}/#/payment-success?session_id={CHECKOUT_SESSION_ID}&payment_method=who&offer_type=all_content&price=100`;
+      // Nota: session_id será gerado automaticamente na página de sucesso
+      const successUrl = `${window.location.origin}/#/payment-success?payment_method=who&offer_type=all_content&price=100`;
       const cancelUrl = `${window.location.origin}/#/?payment_canceled=true`;
       
       // Create checkout session

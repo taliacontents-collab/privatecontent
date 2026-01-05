@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { FC } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -66,6 +66,7 @@ const cryptoIcons: Record<string, JSX.Element> = {
 const VideoPlayer: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const { telegramUsername, stripePublishableKey, cryptoWallets, siteName, whoApiKey, loading: configLoading } = useSiteConfig();
   const [video, setVideo] = useState<Video | null>(null);
@@ -89,6 +90,7 @@ const VideoPlayer: FC = () => {
   const theme = useTheme();
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  const [showCancelMessage, setShowCancelMessage] = useState(false);
 
   // Debug: Log Whop API key when it changes
   useEffect(() => {
@@ -96,6 +98,21 @@ const VideoPlayer: FC = () => {
       console.warn('[Whop] API Key is empty or not configured');
     }
   }, [whoApiKey, configLoading]);
+
+  // Detectar se o pagamento foi cancelado
+  useEffect(() => {
+    const paymentCanceled = searchParams.get('payment_canceled');
+    if (paymentCanceled === 'true') {
+      setShowCancelMessage(true);
+      console.log('✅ REDIRECIONAMENTO WHOP FUNCIONANDO! URL contém: payment_canceled=true');
+      // Limpar o parâmetro da URL após 8 segundos
+      setTimeout(() => {
+        setShowCancelMessage(false);
+        searchParams.delete('payment_canceled');
+        setSearchParams(searchParams);
+      }, 8000);
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -380,7 +397,8 @@ Please let me know how to proceed with payment.`;
       setPurchasedProductName(randomProductName);
       
       // Build success and cancel URLs (with # for HashRouter)
-      const successUrl = `${window.location.origin}/#/payment-success?video_id=${id}&session_id={CHECKOUT_SESSION_ID}&payment_method=who`;
+      // Nota: session_id será gerado automaticamente na página de sucesso
+      const successUrl = `${window.location.origin}/#/payment-success?video_id=${id}&payment_method=who`;
       const cancelUrl = `${window.location.origin}/#/video/${id}?payment_canceled=true`;
       
       // Create checkout session
@@ -698,6 +716,25 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
           </Alert>
         )}
         
+        {/* Mensagem de Cancelamento de Pagamento */}
+        {showCancelMessage && (
+          <Alert 
+            severity="success" 
+            sx={{ mb: 3 }}
+            onClose={() => setShowCancelMessage(false)}
+          >
+            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              ✅ REDIRECIONAMENTO WHOP FUNCIONANDO!
+            </Typography>
+            <Typography variant="body2">
+              Pagamento cancelado. Você foi redirecionado de volta com sucesso do checkout do Whop.
+            </Typography>
+            <Typography variant="caption" component="div" sx={{ mt: 1, opacity: 0.7, fontFamily: 'monospace' }}>
+              URL: ?payment_canceled=true
+            </Typography>
+          </Alert>
+        )}
+        
         {/* Back button */}
         <Button 
           startIcon={<ArrowBackIcon />} 
@@ -896,6 +933,7 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
                     </Box>
                   </Grid>
                 </Grid>
+
                   {telegramUsername && (
                   <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       <Button
