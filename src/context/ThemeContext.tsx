@@ -11,7 +11,7 @@ interface ThemeContextType {
 }
 
 export const ThemeContext = createContext<ThemeContextType>({
-  mode: 'light',
+  mode: 'dark',
   toggleTheme: () => {},
 });
 
@@ -20,7 +20,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [mode, setMode] = useState<ThemeMode>('light');
+  const [mode, setMode] = useState<ThemeMode>('dark');
 
   useEffect(() => {
     // Check if user has a saved theme preference
@@ -28,8 +28,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     if (savedTheme) {
       setMode(savedTheme);
     } else {
-      // Set light theme as default
-      localStorage.setItem('theme', 'light');
+      // Set dark theme as default
+      localStorage.setItem('theme', 'dark');
     }
   }, []);
 
@@ -50,25 +50,25 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     palette: {
       mode,
       primary: {
-        main: '#0D47A1',
+        main: '#8b1e3f', // muted burgundy
       },
       secondary: {
-        main: '#1565C0',
+        main: '#5a1a1a', // deep wine
       },
       background: {
-        default: mode === 'dark' ? '#000000' : '#f5f8ff',
-        paper: mode === 'dark' ? '#1a1a1a' : '#ffffff',
+        default: mode === 'dark' ? '#0b0b0b' : '#f7f7fb',
+        paper: mode === 'dark' ? '#111111' : '#ffffff',
       },
       text: {
-        primary: mode === 'dark' ? '#FFFFFF' : '#111111',
-        secondary: mode === 'dark' ? '#d32f2f' : '#555555',
+        primary: mode === 'dark' ? '#e6e6e6' : '#111111',
+        secondary: mode === 'dark' ? '#9aa0a6' : '#4b4b4b',
       },
       error: {
-        main: '#FF0000', // Pure red for errors
+        main: '#d32f2f',
       },
     },
     typography: {
-      fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       h1: {
         fontWeight: 800,
         letterSpacing: '0.5px',
@@ -102,15 +102,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         styleOverrides: {
           root: {
             borderRadius: 8,
-            backgroundColor: mode === 'dark' ? '#1a1a1a' : '#ffffff',
+            backgroundColor: mode === 'dark' ? '#121212' : '#ffffff',
             transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-            border: mode === 'dark' ? '1px solid rgba(33, 150, 243, 0.15)' : '1px solid rgba(13,71,161,0.12)',
-            boxShadow: mode === 'dark' ? '0 4px 16px rgba(0,0,0,0.5)' : '0 4px 12px rgba(13,71,161,0.06)',
+            border: mode === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
+            boxShadow: mode === 'dark' ? '0 6px 18px rgba(0,0,0,0.45)' : '0 4px 12px rgba(0,0,0,0.08)',
             '&:hover': {
-              transform: 'translateY(-4px)',
+              transform: 'translateY(-2px)',
               zIndex: 1,
-              borderColor: mode === 'dark' ? 'rgba(33, 150, 243, 0.4)' : 'rgba(13,71,161,0.3)',
-              boxShadow: mode === 'dark' ? '0 12px 32px rgba(33, 150, 243, 0.2)' : '0 10px 24px rgba(13,71,161,0.12)',
+              borderColor: mode === 'dark' ? 'rgba(139, 30, 63, 0.35)' : 'rgba(139,30,63,0.2)',
+              boxShadow: mode === 'dark' ? '0 10px 28px rgba(139,30,63,0.18)' : '0 10px 24px rgba(0,0,0,0.12)',
             },
           },
         },
@@ -118,11 +118,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: mode === 'dark' ? 'rgba(26, 26, 26, 0.95)' : '#ffffff',
+            backgroundColor: mode === 'dark' ? 'rgba(17, 17, 17, 0.9)' : '#ffffff',
             color: mode === 'dark' ? '#ffffff' : '#111111',
-            boxShadow: mode === 'dark' ? '0 2px 16px rgba(0, 0, 0, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
+            boxShadow: mode === 'dark' ? '0 2px 14px rgba(0, 0, 0, 0.5)' : '0 2px 8px rgba(0, 0, 0, 0.08)',
             backdropFilter: 'blur(10px)',
-            borderBottom: mode === 'dark' ? '1px solid rgba(33, 150, 243, 0.1)' : '1px solid rgba(0,0,0,0.06)',
+            borderBottom: mode === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
           },
         },
       },
@@ -130,7 +130,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         styleOverrides: {
           root: {
             '&:hover': {
-              backgroundColor: 'rgba(211, 47, 47, 0.1)',
+              backgroundColor: mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
             }
           }
         }

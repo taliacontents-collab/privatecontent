@@ -17,9 +17,10 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
-import { Chip } from '@mui/material';
+import { Chip, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import HttpsIcon from '@mui/icons-material/Https';
 
 const Header: FC = () => {
   const { mode, toggleTheme } = useContext(ThemeContext);
@@ -89,13 +90,12 @@ const Header: FC = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              background: mode === 'dark' ? 'linear-gradient(to right, #d32f2f 0%, #b71c1c 100%)' : 'transparent',
+              background: 'transparent',
               borderRadius: '8px',
               px: 1.5,
               py: 0.5,
               mr: 1,
-              border: mode === 'dark' ? 'none' : '1px solid rgba(0,0,0,0.08)',
-              boxShadow: mode === 'dark' ? '0 2px 8px rgba(0, 0, 0, 0.3)' : 'none',
+              border: mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
             }}
           >
             <Typography
@@ -134,6 +134,44 @@ const Header: FC = () => {
               fontSize: '0.7rem'
             }} 
           />
+          
+          {/* SSL/Security Badge */}
+          {!isMobile && (
+            <Tooltip title="Secure SSL Encrypted Connection" arrow>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  ml: 2,
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: '6px',
+                  background: theme.palette.mode === 'dark'
+                    ? 'rgba(76,175,80,0.15)'
+                    : 'rgba(76,175,80,0.1)',
+                  border: '1px solid rgba(76,175,80,0.3)',
+                }}
+              >
+                <HttpsIcon 
+                  sx={{ 
+                    fontSize: '16px', 
+                    color: '#4caf50',
+                    mr: 0.5
+                  }} 
+                />
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: '#4caf50',
+                    fontWeight: 600,
+                    fontSize: '0.7rem'
+                  }}
+                >
+                  SECURE
+                </Typography>
+              </Box>
+            </Tooltip>
+          )}
         </Box>
         
         {/* Search Bar */}
@@ -207,7 +245,7 @@ const Header: FC = () => {
               color: mode === 'dark' ? '#fff' : '#111',
               fontWeight: 600,
               '&:hover': {
-                bgcolor: theme => mode === 'dark' ? 'rgba(13,71,161,0.12)' : 'rgba(13,71,161,0.06)'
+                bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
               }
             }}
           >
@@ -223,12 +261,30 @@ const Header: FC = () => {
               color: mode === 'dark' ? '#fff' : '#111',
               fontWeight: 600,
               '&:hover': {
-                bgcolor: theme => mode === 'dark' ? 'rgba(13,71,161,0.12)' : 'rgba(13,71,161,0.06)'
+                bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
               }
             }}
           >
             Videos
           </Button>
+          
+          {!isMobile && (
+            <Button 
+              color="inherit" 
+              component={RouterLink} 
+              to="/about"
+              sx={{ 
+                mr: 1,
+                color: mode === 'dark' ? '#fff' : '#111',
+                fontWeight: 600,
+                '&:hover': {
+                  bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
+                }
+              }}
+            >
+              About
+            </Button>
+          )}
           
           {/* Mobile Search Icon */}
           {isMobile && (
@@ -239,7 +295,7 @@ const Header: FC = () => {
                 mr: 1,
                 color: mode === 'dark' ? '#fff' : '#111',
                 '&:hover': {
-                  bgcolor: theme => mode === 'dark' ? 'rgba(13,71,161,0.12)' : 'rgba(13,71,161,0.06)'
+                  bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
                 }
               }}
               aria-label="search"
@@ -261,7 +317,7 @@ const Header: FC = () => {
                   color: mode === 'dark' ? '#fff' : '#111',
                   fontWeight: 600,
                   '&:hover': {
-                    bgcolor: theme => mode === 'dark' ? 'rgba(13,71,161,0.12)' : 'rgba(13,71,161,0.06)'
+                    bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
                   }
                 }}
               >
@@ -274,7 +330,7 @@ const Header: FC = () => {
                 sx={{ 
                   color: mode === 'dark' ? '#fff' : '#111',
                   '&:hover': {
-                    bgcolor: theme => mode === 'dark' ? 'rgba(13,71,161,0.12)' : 'rgba(13,71,161,0.06)'
+                    bgcolor: theme => mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
                   } 
                 }} 
                 aria-label="logout"

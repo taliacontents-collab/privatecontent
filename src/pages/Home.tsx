@@ -28,6 +28,8 @@ import PromoOfferBanner from '../components/PromoOfferBanner';
 import DatabaseSetupModal from '../components/DatabaseSetupModal';
 import CredentialsStatus from '../components/CredentialsStatus';
 import ContactSection from '../components/ContactSection';
+import TrustBadges from '../components/TrustBadges';
+// Testimonials removido a pedido
 
 // Skeleton card component for loading state
 const VideoCardSkeleton: FC = () => {
@@ -615,8 +617,26 @@ Please let me know if you need any assistance accessing your content.`;
         </Fade>
       </Container>
       
+      {/* Trust Badges Section */}
+      <Box 
+        sx={{ 
+          py: 4,
+          background: theme => theme.palette.mode === 'dark'
+            ? 'rgba(26,26,26,0.5)'
+            : 'rgba(250,250,252,0.5)',
+          borderTop: theme => `1px solid ${theme.palette.divider}`,
+          borderBottom: theme => `1px solid ${theme.palette.divider}`
+        }}
+      >
+        <Container maxWidth="lg">
+          <TrustBadges variant="compact" />
+        </Container>
+      </Box>
+      
+      {/* Testimonials Section removido */}
+      
       {/* Promo banner no final da página antes do footer */}
-      <Box sx={{ mb: 4 }}>
+      <Box sx={{ my: 4 }}>
         <PromoOfferBanner telegramUsername={telegramUsername} />
       </Box>
       

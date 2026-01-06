@@ -324,14 +324,14 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
           transition: 'all 0.3s ease',
           borderRadius: '12px',
           overflow: 'hidden',
-          boxShadow: theme => `0 8px 20px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.08)'}`,
+          boxShadow: theme => `0 8px 18px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.08)'}`,
           cursor: 'pointer',
           backgroundColor: theme => theme.palette.background.paper,
-          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(142,36,170,0.2)' : '1px solid rgba(0,0,0,0.06)',
+          border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
           '&:hover': {
-            transform: 'translateY(-6px) scale(1.01)',
-            boxShadow: theme => theme.palette.mode === 'dark' ? '0 16px 30px rgba(0,0,0,0.5)' : '0 16px 32px rgba(0,0,0,0.12)',
-            borderColor: 'rgba(13,71,161,0.35)',
+            transform: 'translateY(-3px)',
+            boxShadow: theme => theme.palette.mode === 'dark' ? '0 14px 28px rgba(0,0,0,0.45)' : '0 16px 28px rgba(0,0,0,0.12)',
+            borderColor: theme => theme.palette.mode === 'dark' ? 'rgba(139,30,63,0.3)' : 'rgba(139,30,63,0.2)',
           }
         }}
         onClick={handleCardClick}
@@ -536,7 +536,7 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
             fontSize: '0.9rem',
             height: '32px',
             backgroundColor: theme => theme.palette.primary.main,
-            border: '2px solid rgba(255, 255, 255, 0.6)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             '& .MuiChip-label': {
               color: 'white',
               fontWeight: 'bold',
@@ -648,10 +648,10 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
                   fontWeight: 'bold',
                   fontSize: '0.875rem',
                   textTransform: 'none',
-                  background: 'linear-gradient(45deg, #c62828 30%, #ef5350 90%)',
-                  color: 'white',
+              backgroundColor: theme => theme.palette.primary.main,
+              color: 'white',
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #b71c1c 30%, #e53935 90%)',
+                backgroundColor: '#5a1a1a',
                   },
                   '&:disabled': {
                     background: '#555',
@@ -677,9 +677,9 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
           fullWidth
           PaperProps={{
             sx: {
-              background: theme => theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)' : '#ffffff',
+              background: theme => theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #111111 0%, #1b1b1b 100%)' : '#ffffff',
               borderRadius: 3,
-              border: theme => theme.palette.mode === 'dark' ? '1px solid #d32f2f' : '1px solid rgba(0,0,0,0.08)'
+              border: theme => theme.palette.mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)'
             }
           }}
         >
@@ -775,7 +775,7 @@ I'm sending the payment from my wallet. Please confirm the transaction and provi
                       sx={{
                         color: 'white',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#d32f2f',
+                          borderColor: theme => theme.palette.primary.main,
                         },
                         '& .MuiSvgIcon-root': {
                           color: '#ccc'
